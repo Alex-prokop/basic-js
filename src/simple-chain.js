@@ -1,32 +1,47 @@
+  
 const CustomError = require("../extensions/custom-error");
 
 const chainMaker = {
-  array: [],
-  chain: '',
+  dataStr:[],
   getLength() {
-    return this.array.length();
+    //throw new CustomError('Not implemented');
+    // remove line with error and write your code here
+    return this.dataStr.length
   },
   addLink(value) {
-    this.array.push(`( ${value} )`);
-    return this; // метод должен возвращать объект после преобразования, чтобы с ним можно было работать дальше.
+    //throw new CustomError('Not implemented');
+    // remove line with error and write your code here
+    this.dataStr.push(value)
+    return this
   },
   removeLink(position) {
-    if (!this.array[position - 1] || !Number.isInteger(position)) {
-      this.array = [];
-      throw new Error('Error');
-    };
-    this.array.splice(position - 1, 1);
-    return this;
+    //throw new CustomError('Not implemented');
+    // remove line with error and write your code here
+    if (!Number.isInteger(position)){
+      this.dataStr=[]
+      throw Error ('Position is not a number')
+    }
+    if(position<1 || position>this.dataStr.length) {
+      this.dataStr=[]
+      throw Error('Parameter out of range')
+    }
+    this.dataStr.splice(position-1,1)
+    return this
   },
   reverseChain() {
-    this.array.reverse();
-    return this;
+    //throw new CustomError('Not implemented');
+    // remove line with error and write your code here
+    this.dataStr.reverse()
+    return this
   },
   finishChain() {
-    this.chain = this.array.join('~~');
-    this.array = [];
-    return this.chain; // А здесь нам нужна итоговая строка, поэтому выводится она.
-  },
+    //throw new CustomError('Not implemented');
+    // remove line with error and write your code here
+    let result
+    this.dataStr.forEach((item,index)=>index===0?result=`( ${item} )`:result+=`~~( ${item} )`)
+    this.dataStr=[]
+    return result
+  }
 };
 
 module.exports = chainMaker;

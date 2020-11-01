@@ -4,16 +4,27 @@ const MODERN_ACTIVITY= 15;
 const HALF_LIFE_PERIOD= 5730;
 
 module.exports = function dateSample(sampleActivity) {
-  const A = Number(sampleActivity);
+  //throw new CustomError('Not implemented');
+  // remove line with error and write your code here
 
-  if (typeof(sampleActivity) === 'string' &&  
-      A !== NaN &&                            
-      A > 0 && 
-      A < MODERN_ACTIVITY) {
-        let k = Math.log(2) / HALF_LIFE_PERIOD;
-        let t = Math.ceil(Math.log(MODERN_ACTIVITY / A) / k);
-        return t;
-  } else {
+  if (typeof sampleActivity!=="string"){
     return false;
-  };
+  }
+  let firstPointFlag=false
+  sampleActivity=sampleActivity.split('').filter(it=>{
+    if (it!=='.' || !firstPointFlag){
+      if (it==='.'){
+        firstPointFlag=true
+      }
+      return true
+    }
+    return false
+  }).join('')
+  if (Number(sampleActivity)>MODERN_ACTIVITY || Number(sampleActivity)<=0 || isNaN(Number(sampleActivity))){
+    return false
+  }
+  let k=0.693/HALF_LIFE_PERIOD
+  let t=Math.log(MODERN_ACTIVITY/Number(sampleActivity))/k
+  return Math.ceil(t)
+
 };

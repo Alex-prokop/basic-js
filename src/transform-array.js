@@ -1,31 +1,39 @@
+  
 const CustomError = require("../extensions/custom-error");
 
 module.exports = function transform(arr) {
-  if (!Array.isArray(arr)) throw new Error('Not array');
+    //throw new CustomError('Not implemented');
+    if(!Array.isArray(arr)) throw Error('Param is not array')
+    let flagDiscard = false
+    return  arr.map((item, index, array) => {
+        if (flagDiscard) {
+            flagDiscard = false
+            return '';
+        }
+        if (index > 0) {
+            if (array[index] === '--double-prev') {
+                if(index>1 && array[index-2]==='--discard-next') return ''
+                return array[index - 1]
+            }
+        }
+        if (index < array.length - 1) {
 
-  let stack = [];
-  for (let i = 0; i < arr.length; i++) { 
-      case '--discard-next':
-          i += 1;            
-        break;
-      case '--discard-prev':
-        if (i !== 0 && arr[i - 2] !== '--discard-next') {
-          stack.pop();
-        };
-        break;
-      case '--double-next':
-        if (i !== arr.length - 1) {
-          stack.push(arr[i + 1]);
-        };
-        break;
-      case '--double-prev':
-        if (i !== 0 && arr[i - 2] !== '--discard-next') {
-          stack.push(arr[i - 1]);
-        };
-        break;
-      default:
-        stack.push(arr[i]);
-        break;
-    };
-  }
-  return stack;
+            if (array[index + 1] === '--discard-prev') {
+                return '';
+            }
+            if (array[index] === '--discard-next') {
+                flagDiscard = true;
+            }
+            if (array[index] === '--double-next') {
+                return array[index + 1]
+            }
+        }
+        if (item === '--double-prev' || item === '--discard-prev' || item === '--discard-next') {
+            return '';
+        }
+        if (item === '--double-next') {
+            return ''
+        }
+        return item
+    }).filter(item => item !== '')
+};

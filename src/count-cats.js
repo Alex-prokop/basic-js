@@ -1,13 +1,8 @@
 const CustomError = require("../extensions/custom-error");
 
-module.exports = function countCats( matrix) {
-  let count = 0;
-  for (let i = 0; i < matrix.length; i++) {  // Идея: просто перебрать все элементы массива (таблицы, первый цикл - по строкам, второй - по столбцам)
-    for (let j = 0; j < matrix[i].length; j++) {
-      if (matrix[i][j] === '^^') {
-        count++;
-      };
-    };
-  };
-  return count;
+module.exports = function countCats(backyard) {
+  //throw new CustomError('Not implemented');
+  return backyard.reduce((res,itemStr)=>{
+      return res+=itemStr.reduce((pos,item)=>item==='^^'?++pos:pos,0)
+  },0)
 };
